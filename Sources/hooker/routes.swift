@@ -18,13 +18,13 @@ func routes(_ app: Application) throws {
     app.post("webhooks") { req async -> String in
         req.logger.info("post webhooks \(req.body)")
         Task {
-            try await executeProcessAndReturnResult("swift -v")
+             executeProcessAndReturnResult("swift -v")
         }
         
         return ""
     }
     
-    func executeProcessAndReturnResult(_ command: String) -> String {
+    @Sendable func executeProcessAndReturnResult(_ command: String) -> String {
         let process = Process()
         let pipe = Pipe()
         let environment = [
@@ -42,7 +42,7 @@ func routes(_ app: Application) throws {
         } else {
             process.launch()
         }
-        let data = pipe.fileHandleForEading.readDataToEndOfFile()
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: .utf8) ?? ""
         return output
     }
