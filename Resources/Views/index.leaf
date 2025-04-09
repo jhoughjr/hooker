@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>#(title)</title>
+</head>
+
+<body>
+  <h1>#(title)</h1>
+  Get the latest frontend below.
+  The latest server is available under opi5 in the frontend.
+  @ <a href="jimmyhoughjr.freeddns.org:8080">here.</a>
+  <a href=#(frontend_link)>AMOS</a>
+  Uploaded: $(last_upload_time)
+</body>
+</html>
