@@ -7,6 +7,7 @@ let package = Package(
        .macOS(.v13)
     ],
     dependencies: [
+        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),
         // 💧 A server-side Swift web framework.
         .package(url: "https://github.com/vapor/vapor.git", from: "4.110.1"),
         // 🗄 An ORM for SQL and NoSQL databases.
@@ -22,6 +23,7 @@ let package = Package(
         .executableTarget(
             name: "hooker",
             dependencies: [
+                .product(name: "ShellOut", package: "shellout"),
                 .product(name: "Fluent", package: "fluent"),
                 .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
                 .product(name: "Leaf", package: "leaf"),

@@ -1,5 +1,6 @@
 import Fluent
 import Vapor
+import ShellOut
 
 func routes(_ app: Application) throws {
     
@@ -20,34 +21,15 @@ func routes(_ app: Application) throws {
     app.post("webhooks") { req async -> String in
         req.logger.info("post webhooks \(req.body)")
         Task {
-             executeProcessAndReturnResult("swift -v")
+            print("Pulling...")
+            let pullResult = try shellOut(to: .gitPull())
+            let bildResult = try shellOut(to: .buildSwiftPackage())
+            req.logger.info("\(pullResult) \(bildResult)")
         }
-        
         return ""
     }
     
-    @Sendable func executeProcessAndReturnResult(_ command: String) -> String {
-        let process = Process()
-        let pipe = Pipe()
-        let environment = [
-            "TERM": "xterm",
-            "HOME": "/Users/example-user/",
-            "PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-        ]
-        process.standardOutput = pipe
-        process.standardError = pipe
-//        process.environment = environment
-        process.launchPath = "/bin/zsh"
-        process.arguments = ["-c", command]
-        if #available(macOS 13.0, *) {
-            try! process.run()
-        } else {
-            process.launch()
-        }
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(data: data, encoding: .utf8) ?? ""
-        return output
-    }
+  
     
     try app.register(collection: TodoController())
 }
