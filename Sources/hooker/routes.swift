@@ -2,8 +2,10 @@ import Fluent
 import Vapor
 
 func routes(_ app: Application) throws {
+    
     app.get { req async throws in
-        try await req.view.render("index", ["title": "Hello Vapor!"])
+        try await req.view.render("index", ["title": "Hello Vapor!",
+                                            "frontend_link" : "http://jimmyhoughjr.freeddns.org:8082/AMOS.zip",])
     }
 
     app.get("hello") { req async -> String in
